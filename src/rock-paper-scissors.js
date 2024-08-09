@@ -20,11 +20,25 @@ window.initGame = (React, assetsUrl) => {
       setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15);
     }, []);
 
+    const getCounterChoice = (choice) => {
+      switch (choice) {
+        case 'rock':
+          return 'scissors';
+        case 'paper':
+          return 'rock';
+        case 'scissors':
+          return 'paper';
+        default:
+          return null;
+      }
+    };
+
     const checkVictory = () => {
       if (y >= x) {
         // When victory condition is met
         setResultMessage("Victory achieved! Y has reached or exceeded X!");
-        setComputerChoice(playerChoice); // Set computer's choice to match player's choice
+        const counterChoice = getCounterChoice(playerChoice);
+        setComputerChoice(counterChoice); // Set computer's choice to the choice beaten by the player
         resetThreshold();
       }
     };
@@ -52,7 +66,8 @@ window.initGame = (React, assetsUrl) => {
         setY(0); // Reset Y
         setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
         setResultMessage("You win! Victory Threshold achieved!");
-        setComputerChoice(choice); // Set computer's choice to player's choice on victory
+        // Set computer's choice to the choice that the player can defeat
+        setComputerChoice(getCounterChoice(choice));
       } else {
         // Player loses
         const increment = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
