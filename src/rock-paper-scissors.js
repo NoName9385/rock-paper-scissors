@@ -66,7 +66,9 @@ window.initGame = (React, assetsUrl) => {
       const increment = Math.floor(Math.random() * (10 - 5 + 1)) + 5; // Random increment between 5 and 10
       setY(y + increment);
       setLosses(losses + 1);
-      setResultMessage(`Failure triggered! Y is now ${y + increment}.`);
+      setPlayerChoice('rock'); // Set player's choice to rock
+      setComputerChoice('paper'); // Set computer's choice to paper
+      setResultMessage(`Failure triggered! You chose Rock and the Computer chose Paper. Y is now ${y + increment}.`);
 
       // Check for victory condition after failure
       checkVictory();
