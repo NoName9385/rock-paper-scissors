@@ -2,7 +2,7 @@
 /// rock-paper-scissors.js
 
 window.initGame = (React, assetsUrl) => {
-  const { useState } = React;
+  const { useState, useEffect } = React;
 
   const RockPaperScissors = ({ assetsUrl }) => {
     const choices = ['rock', 'paper', 'scissors'];
@@ -12,6 +12,13 @@ window.initGame = (React, assetsUrl) => {
     const [playerChoice, setPlayerChoice] = useState(null);
     const [resultMessage, setResultMessage] = useState('');
     const [roundActive, setRoundActive] = useState(false);
+    const [x, setX] = useState(0);
+    const [y, setY] = useState(0);
+
+    // Initialize x with a random number between 15 and 30
+    useEffect(() => {
+      setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15);
+    }, []);
 
     const playGame = (choice) => {
       const randomIndex = Math.floor(Math.random() * choices.length);
@@ -28,12 +35,28 @@ window.initGame = (React, assetsUrl) => {
         (choice === 'scissors' && computerChoice === 'paper') ||
         (choice === 'paper' && computerChoice === 'rock')
       ) {
+        // Player wins
         setWins(wins + 1);
-        setResultMessage("You win!");
+        if (y === x) {
+          // Player must win if y equals x
+          setResultMessage("You win! Victory Threshold achieved!");
+          resetThreshold();
+        } else {
+          setResultMessage("You win!");
+        }
       } else {
+        // Player loses
+        const increment = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
+        setY(y + increment);
         setLosses(losses + 1);
-        setResultMessage("You lose!");
+        setResultMessage(`You lose! Y is now ${y}. Try again!`);
       }
+    };
+
+    const resetThreshold = () => {
+      setY(0);
+      setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15);
+      // Optionally reset losses here if you want to reset y on win
     };
 
     const nextRound = () => {
@@ -46,14 +69,16 @@ window.initGame = (React, assetsUrl) => {
     const resetGame = () => {
       setWins(0);
       setLosses(0);
+      resetThreshold();
       nextRound();
     };
 
     return React.createElement(
       'div',
       { className: "rock-paper-scissors", style: { textAlign: 'center' } },
-      React.createElement('h2', null, "Rock-Paper-Scissors"),
+      React.createElement('h2', null, "Rock-Paper-Scissors - Victory Threshold"),
       React.createElement('p', null, `Wins: ${wins} | Losses: ${losses}`),
+      React.createElement('p', null, `Victory Threshold (X): ${x} | Current Y: ${y}`),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px' } },
         React.createElement('div', { className: "player-choice", style: { textAlign: 'center', marginRight: '20px' } },
           playerChoice && React.createElement('p', null, `You chose`),
