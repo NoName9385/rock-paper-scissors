@@ -20,6 +20,13 @@ window.initGame = (React, assetsUrl) => {
       setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15);
     }, []);
 
+    const checkVictory = () => {
+      if (y >= x) {
+        setResultMessage("Victory achieved! Y has reached or exceeded X!");
+        resetThreshold();
+      }
+    };
+
     const playGame = (choice) => {
       const randomIndex = Math.floor(Math.random() * choices.length);
       const computerChoice = choices[randomIndex];
@@ -50,6 +57,15 @@ window.initGame = (React, assetsUrl) => {
         setLosses(losses + 1);
         setResultMessage(`You lose! Y is now ${y + increment}. Try again!`);
       }
+
+      // Check for victory condition
+      checkVictory();
+    };
+
+    const resetThreshold = () => {
+      setY(0);
+      setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
+      nextRound();
     };
 
     const nextRound = () => {
@@ -62,9 +78,7 @@ window.initGame = (React, assetsUrl) => {
     const resetGame = () => {
       setWins(0);
       setLosses(0);
-      setY(0);
-      setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
-      nextRound();
+      resetThreshold();
     };
 
     return React.createElement(
