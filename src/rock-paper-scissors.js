@@ -1,50 +1,59 @@
 // This would be stored in the 'src' folder of the GitHub repository
 // rock-paper-scissors.js
+
 window.initGame = (React, assetsUrl) => {
-  const { useState, useEffect } = React;
+  const { useState } = React;
 
-  const WhackAMole = ({ assetsUrl }) => {
+  const RockPaperScissors = ({ assetsUrl }) => {
+    const choices = ['rock', 'paper', 'scissors'];
     const [score, setScore] = useState(0);
-    const [activeMole, setActiveMole] = useState(null);
+    const [computerChoice, setComputerChoice] = useState(null);
+    const [resultMessage, setResultMessage] = useState('');
 
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setActiveMole(Math.floor(Math.random() * 9));
-      }, 1000);
-      return () => clearInterval(interval);
-    }, []);
+    const playGame = (playerChoice) => {
+      const randomIndex = Math.floor(Math.random() * choices.length);
+      const computerChoice = choices[randomIndex];
+      setComputerChoice(computerChoice);
 
-    const whackMole = (index) => {
-      if (index === activeMole) {
+      // Determine the winner
+      if (playerChoice === computerChoice) {
+        setResultMessage("It's a tie!");
+      } else if (
+        (playerChoice === 'rock' && computerChoice === 'scissors') ||
+        (playerChoice === 'scissors' && computerChoice === 'paper') ||
+        (playerChoice === 'paper' && computerChoice === 'rock')
+      ) {
         setScore(score + 1);
-        setActiveMole(null);
+        setResultMessage("You win!");
+      } else {
+        setScore(score - 1);
+        setResultMessage("You lose!");
       }
     };
 
     return React.createElement(
       'div',
-      { className: "whack-a-mole" },
-      React.createElement('h2', null, "Whack-a-Mole"),
+      { className: "rock-paper-scissors" },
+      React.createElement('h2', null, "Rock-Paper-Scissors"),
       React.createElement('p', null, `Score: ${score}`),
-      React.createElement(
-        'div',
-        { className: "game-board" },
-        Array(9).fill().map((_, index) =>
+      React.createElement('div', { className: "choices" },
+        choices.map(choice =>
           React.createElement(
-            'div',
+            'button',
             {
-              key: index,
-              className: `mole ${index === activeMole ? 'active' : ''}`,
-              onClick: () => whackMole(index)
+              key: choice,
+              onClick: () => playGame(choice),
             },
-            index === activeMole && React.createElement('img', { src: `${assetsUrl}/mole.png`, alt: "Mole" })
+            choice.charAt(0).toUpperCase() + choice.slice(1)
           )
         )
-      )
+      ),
+      computerChoice && React.createElement('p', null, `Computer chose: ${computerChoice}`),
+      React.createElement('p', null, resultMessage)
     );
   };
 
-  return () => React.createElement(WhackAMole, { assetsUrl: assetsUrl });
+  return () => React.createElement(RockPaperScissors, { assetsUrl: assetsUrl });
 };
 
-console.log('Whack-a-Mole game script loaded');
+console.log('Rock-Paper-Scissors game script loaded');
