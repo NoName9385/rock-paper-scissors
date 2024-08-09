@@ -1,6 +1,7 @@
 // This would be stored in the 'src' folder of the GitHub repository
 // rock-paper-scissors.js
 
+// rock-paper-scissors.js
 window.initGame = (React, assetsUrl) => {
   const { useState } = React;
 
@@ -9,6 +10,7 @@ window.initGame = (React, assetsUrl) => {
     const [score, setScore] = useState(0);
     const [computerChoice, setComputerChoice] = useState(null);
     const [resultMessage, setResultMessage] = useState('');
+    const [detailedMessage, setDetailedMessage] = useState('');
 
     const playGame = (playerChoice) => {
       const randomIndex = Math.floor(Math.random() * choices.length);
@@ -18,6 +20,7 @@ window.initGame = (React, assetsUrl) => {
       // Determine the winner
       if (playerChoice === computerChoice) {
         setResultMessage("It's a tie!");
+        setDetailedMessage(`You both chose ${computerChoice}.`);
       } else if (
         (playerChoice === 'rock' && computerChoice === 'scissors') ||
         (playerChoice === 'scissors' && computerChoice === 'paper') ||
@@ -25,9 +28,11 @@ window.initGame = (React, assetsUrl) => {
       ) {
         setScore(score + 1);
         setResultMessage("You win!");
+        setDetailedMessage(`You chose ${playerChoice} and the computer chose ${computerChoice}.`);
       } else {
         setScore(score - 1);
         setResultMessage("You lose!");
+        setDetailedMessage(`You chose ${playerChoice} and the computer chose ${computerChoice}.`);
       }
     };
 
@@ -49,7 +54,8 @@ window.initGame = (React, assetsUrl) => {
         )
       ),
       computerChoice && React.createElement('p', null, `Computer chose: ${computerChoice}`),
-      React.createElement('p', null, resultMessage)
+      React.createElement('p', null, resultMessage),
+      React.createElement('p', null, detailedMessage)
     );
   };
 
