@@ -62,6 +62,16 @@ window.initGame = (React, assetsUrl) => {
       checkVictory();
     };
 
+    const triggerFailure = () => {
+      const increment = Math.floor(Math.random() * (10 - 5 + 1)) + 5; // Random increment between 5 and 10
+      setY(y + increment);
+      setLosses(losses + 1);
+      setResultMessage(`Failure triggered! Y is now ${y + increment}.`);
+
+      // Check for victory condition after failure
+      checkVictory();
+    };
+
     const resetThreshold = () => {
       setY(0);
       setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
@@ -122,6 +132,11 @@ window.initGame = (React, assetsUrl) => {
               onClick: () => playGame(choice),
             }
           )
+        ),
+        React.createElement(
+          'button',
+          { onClick: triggerFailure, style: { marginTop: '20px' } },
+          'Trigger Failure'
         )
       ),
       React.createElement(
