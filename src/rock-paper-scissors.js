@@ -14,6 +14,7 @@ window.initGame = (React, assetsUrl) => {
     const [roundActive, setRoundActive] = useState(false);
     const [maxFailures, setMaxFailures] = useState(null); // Random draw threshold
     const [failureCounter, setFailureCounter] = useState(0); // Counter for failures/draws
+    const [victoryTriggered, setVictoryTriggered] = useState(false); // To prevent multiple triggers
 
     const determineComputerChoice = (playerChoice) => {
       const randomIndex = Math.floor(Math.random() * choices.length);
@@ -55,7 +56,7 @@ window.initGame = (React, assetsUrl) => {
       setFailureCounter(failureCounter + 1); // Increment counter
 
       // Check if we should force a win
-      if (failureCounter + 1 >= maxFailures) {
+      if (failureCounter + 1 >= maxFailures && !victoryTriggered) {
         forceWin();
       }
     };
@@ -66,12 +67,14 @@ window.initGame = (React, assetsUrl) => {
       setComputerChoice(forcedComputerChoice);
       setWins(wins + 1);
       setResultMessage("You definitely win this round!");
-      resetFailureCounter(); // Reset counter after forcing a win
+      setVictoryTriggered(true); // Set flag to prevent further triggers
+      // Note: failureCounter is not reset here, allowing the mechanic to continue until the reset
     };
 
     const resetFailureCounter = () => {
       setFailureCounter(0);
       setMaxFailures(null); // Reset the maxFailures to allow for a new random value
+      setVictoryTriggered(false); // Reset the victory trigger flag
     };
 
     const getLosingChoice = (winningChoice) => {
@@ -86,6 +89,7 @@ window.initGame = (React, assetsUrl) => {
       setPlayerChoice(null);
       setResultMessage('');
       setRoundActive(false);
+      resetFailureCounter(); // Call reset when moving to the next round
     };
 
     const resetGame = () => {
