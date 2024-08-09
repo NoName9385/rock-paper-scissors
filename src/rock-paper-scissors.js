@@ -1,12 +1,13 @@
 // This would be stored in the 'src' folder of the GitHub repository
-// rock-paper-scissors.js
+/// rock-paper-scissors.js
 
 window.initGame = (React, assetsUrl) => {
   const { useState } = React;
 
   const RockPaperScissors = ({ assetsUrl }) => {
     const choices = ['rock', 'paper', 'scissors'];
-    const [score, setScore] = useState(0);
+    const [wins, setWins] = useState(0);
+    const [losses, setLosses] = useState(0);
     const [computerChoice, setComputerChoice] = useState(null);
     const [playerChoice, setPlayerChoice] = useState(null);
     const [resultMessage, setResultMessage] = useState('');
@@ -27,10 +28,10 @@ window.initGame = (React, assetsUrl) => {
         (choice === 'scissors' && computerChoice === 'paper') ||
         (choice === 'paper' && computerChoice === 'rock')
       ) {
-        setScore(score + 1);
+        setWins(wins + 1);
         setResultMessage("You win!");
       } else {
-        setScore(score - 1);
+        setLosses(losses + 1);
         setResultMessage("You lose!");
       }
     };
@@ -43,7 +44,8 @@ window.initGame = (React, assetsUrl) => {
     };
 
     const resetGame = () => {
-      setScore(0);
+      setWins(0);
+      setLosses(0);
       nextRound();
     };
 
@@ -51,7 +53,7 @@ window.initGame = (React, assetsUrl) => {
       'div',
       { className: "rock-paper-scissors", style: { textAlign: 'center' } },
       React.createElement('h2', null, "Rock-Paper-Scissors"),
-      React.createElement('p', null, `Score: ${score}`),
+      React.createElement('p', null, `Wins: ${wins} | Losses: ${losses}`),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '20px' } },
         React.createElement('div', { className: "player-choice", style: { textAlign: 'center' } },
           playerChoice && React.createElement('p', null, `You chose`),
