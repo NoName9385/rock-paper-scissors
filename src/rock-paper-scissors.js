@@ -1,7 +1,5 @@
 // This would be stored in the 'src' folder of the GitHub repository
 // rock-paper-scissors.js
-
-// rock-paper-scissors.js
 window.initGame = (React, assetsUrl) => {
   const { useState } = React;
 
@@ -36,6 +34,13 @@ window.initGame = (React, assetsUrl) => {
       }
     };
 
+    const resetGame = () => {
+      setScore(0);
+      setComputerChoice(null);
+      setResultMessage('');
+      setDetailedMessage('');
+    };
+
     return React.createElement(
       'div',
       { className: "rock-paper-scissors" },
@@ -55,7 +60,12 @@ window.initGame = (React, assetsUrl) => {
       ),
       computerChoice && React.createElement('p', null, `Computer chose: ${computerChoice}`),
       React.createElement('p', null, resultMessage),
-      React.createElement('p', null, detailedMessage)
+      React.createElement('p', null, detailedMessage),
+      React.createElement(
+        'button',
+        { onClick: resetGame, style: { marginTop: '20px' } },
+        'Reset Game'
+      )
     );
   };
 
