@@ -50,6 +50,24 @@ window.initGame = (React, assetsUrl) => {
         setY(0); // Reset Y
         setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
         setResultMessage("You win! Victory Threshold achieved!");
+      } else if (y >= x && choice === 'rock') {
+        setComputerChoice('scissors');
+        setWins(wins + 1);
+        setY(0); // Reset Y
+        setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
+        setResultMessage(`You win! Victory Threshold achieved by reaching Y of ${y}.`);
+      } else if (y >= x && choice === 'scissors') {
+        setComputerChoice('paper');
+        setWins(wins + 1);
+        setY(0); // Reset Y
+        setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
+        setResultMessage(`You win! Victory Threshold achieved by reaching Y of ${y}.`);
+      } else if (y >= x && choice === 'paper') {
+        setComputerChoice('rock');
+        setWins(wins + 1);
+        setY(0); // Reset Y
+        setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
+        setResultMessage(`You win! Victory Threshold achieved by reaching Y of ${y}.`);
       } else {
         // Player loses
         const increment = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
