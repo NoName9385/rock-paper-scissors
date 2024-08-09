@@ -53,23 +53,23 @@ window.initGame = (React, assetsUrl) => {
       React.createElement('h2', null, "Rock-Paper-Scissors"),
       React.createElement('p', null, `Score: ${score}`),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '20px' } },
-        React.createElement('div', { className: "player-choice", style: { textAlign: 'center', margin: '0 5px' } },
+        React.createElement('div', { className: "player-choice", style: { textAlign: 'center' } },
           playerChoice && React.createElement('p', null, `You chose`),
           playerChoice && React.createElement('img', {
             src: `${assetsUrl}/${playerChoice}.png`,
             alt: playerChoice,
-            style: { width: '150px' }, // Enlarged image
+            style: { width: '100px' },
           })
         ),
         React.createElement('div', { className: "result", style: { textAlign: 'center', margin: '0 20px' } },
           React.createElement('p', null, resultMessage)
         ),
-        React.createElement('div', { className: "computer-choice", style: { textAlign: 'center', margin: '0 5px' } },
+        React.createElement('div', { className: "computer-choice", style: { textAlign: 'center' } },
           computerChoice && React.createElement('p', null, `Computer chose`),
           computerChoice && React.createElement('img', {
             src: `${assetsUrl}/${computerChoice}.png`,
             alt: computerChoice,
-            style: { width: '150px' }, // Enlarged image
+            style: { width: '100px' },
           })
         )
       ),
