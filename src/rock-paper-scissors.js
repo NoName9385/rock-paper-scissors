@@ -1,5 +1,6 @@
 // This would be stored in the 'src' folder of the GitHub repository
 // rock-paper-scissors.js
+
 window.initGame = (React, assetsUrl) => {
   const { useState } = React;
 
@@ -49,12 +50,14 @@ window.initGame = (React, assetsUrl) => {
       React.createElement('div', { className: "choices" },
         choices.map(choice =>
           React.createElement(
-            'button',
+            'img',
             {
               key: choice,
+              src: `${assetsUrl}/${choice}.png`, // Assuming the images are named rock.png, paper.png, scissors.png
+              alt: choice,
+              style: { width: '100px', cursor: 'pointer', margin: '10px' },
               onClick: () => playGame(choice),
-            },
-            choice.charAt(0).toUpperCase() + choice.slice(1)
+            }
           )
         )
       ),
