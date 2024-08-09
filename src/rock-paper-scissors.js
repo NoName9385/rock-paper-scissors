@@ -10,14 +10,12 @@ window.initGame = (React, assetsUrl) => {
     const [computerChoice, setComputerChoice] = useState(null);
     const [playerChoice, setPlayerChoice] = useState(null);
     const [resultMessage, setResultMessage] = useState('');
-    const [roundActive, setRoundActive] = useState(false);
 
     const playGame = (choice) => {
       const randomIndex = Math.floor(Math.random() * choices.length);
       const computerChoice = choices[randomIndex];
       setComputerChoice(computerChoice);
       setPlayerChoice(choice);
-      setRoundActive(true);
 
       // Determine the winner
       if (choice === computerChoice) {
@@ -35,45 +33,40 @@ window.initGame = (React, assetsUrl) => {
       }
     };
 
-    const nextRound = () => {
+    const resetGame = () => {
+      setScore(0);
       setComputerChoice(null);
       setPlayerChoice(null);
       setResultMessage('');
-      setRoundActive(false);
-    };
-
-    const resetGame = () => {
-      setScore(0);
-      nextRound();
     };
 
     return React.createElement(
       'div',
-      { className: "rock-paper-scissors", style: { textAlign: 'center' } },
+      { className: "rock-paper-scissors" },
       React.createElement('h2', null, "Rock-Paper-Scissors"),
       React.createElement('p', null, `Score: ${score}`),
-      React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '20px' } },
+      React.createElement('div', { className: "game-display", style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
         React.createElement('div', { className: "player-choice", style: { textAlign: 'center' } },
-          playerChoice && React.createElement('p', null, `You chose`),
           playerChoice && React.createElement('img', {
             src: `${assetsUrl}/${playerChoice}.png`,
             alt: playerChoice,
             style: { width: '100px' },
-          })
+          }),
+          playerChoice && React.createElement('p', null, `You chose: ${playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1)}`)
         ),
-        React.createElement('div', { className: "result", style: { textAlign: 'center', margin: '0 20px' } },
+        React.createElement('div', { className: "result", style: { textAlign: 'center' } },
           React.createElement('p', null, resultMessage)
         ),
         React.createElement('div', { className: "computer-choice", style: { textAlign: 'center' } },
-          computerChoice && React.createElement('p', null, `Computer chose`),
           computerChoice && React.createElement('img', {
             src: `${assetsUrl}/${computerChoice}.png`,
             alt: computerChoice,
             style: { width: '100px' },
-          })
+          }),
+          computerChoice && React.createElement('p', null, `Computer chose: ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)}`)
         )
       ),
-      !roundActive && React.createElement(
+      React.createElement(
         'div',
         { style: { marginTop: '20px' } },
         choices.map(choice =>
@@ -90,18 +83,9 @@ window.initGame = (React, assetsUrl) => {
         )
       ),
       React.createElement(
-        'div',
-        { style: { marginTop: '20px' } },
-        roundActive && React.createElement(
-          'button',
-          { onClick: nextRound, style: { margin: '10px' } },
-          'Next Round'
-        ),
-        React.createElement(
-          'button',
-          { onClick: resetGame, style: { margin: '10px' } },
-          'Reset Game'
-        )
+        'button',
+        { onClick: resetGame, style: { marginTop: '20px' } },
+        'Reset Game'
       )
     );
   };
