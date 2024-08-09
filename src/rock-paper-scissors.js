@@ -22,7 +22,9 @@ window.initGame = (React, assetsUrl) => {
 
     const checkVictory = () => {
       if (y >= x) {
+        // When victory condition is met
         setResultMessage("Victory achieved! Y has reached or exceeded X!");
+        setComputerChoice(playerChoice); // Set computer's choice to match player's choice
         resetThreshold();
       }
     };
@@ -50,6 +52,7 @@ window.initGame = (React, assetsUrl) => {
         setY(0); // Reset Y
         setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
         setResultMessage("You win! Victory Threshold achieved!");
+        setComputerChoice(choice); // Set computer's choice to player's choice on victory
       } else {
         // Player loses
         const increment = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
