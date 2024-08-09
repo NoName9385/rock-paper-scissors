@@ -54,7 +54,7 @@ window.initGame = (React, assetsUrl) => {
       { className: "rock-paper-scissors", style: { textAlign: 'center' } },
       React.createElement('h2', null, "Rock-Paper-Scissors"),
       React.createElement('p', null, `Wins: ${wins} | Losses: ${losses}`),
-      React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '20px' } },
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '20px 10px' } }, // Reduced side margins
         React.createElement('div', { className: "player-choice", style: { textAlign: 'center' } },
           playerChoice && React.createElement('p', null, `You chose`),
           playerChoice && React.createElement('img', {
