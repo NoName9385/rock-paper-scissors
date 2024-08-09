@@ -30,7 +30,7 @@ window.initGame = (React, assetsUrl) => {
       // Determine the winner
       if (choice === computerChoice) {
         setResultMessage("It's a tie!");
-        handleFailure();
+        return; // Do not handle failure or victory on tie
       } else if (
         (choice === 'rock' && computerChoice === 'scissors') ||
         (choice === 'scissors' && computerChoice === 'paper') ||
@@ -42,7 +42,7 @@ window.initGame = (React, assetsUrl) => {
       } else {
         setLosses(losses + 1);
         setResultMessage("You lose!");
-        handleFailure();
+        handleFailure(); // Handle failure only on loss
       }
     };
 
