@@ -6,21 +6,15 @@ window.initGame = (React, assetsUrl) => {
 
   const RockPaperScissors = ({ assetsUrl }) => {
     const choices = ['rock', 'paper', 'scissors'];
-    const [wins, setWins] = useState(0);
-    const [losses, setLosses] = useState(0);
+    const [score, setScore] = useState(0);
     const [computerChoice, setComputerChoice] = useState(null);
     const [playerChoice, setPlayerChoice] = useState(null);
     const [resultMessage, setResultMessage] = useState('');
     const [roundActive, setRoundActive] = useState(false);
-    const [failureCounter, setFailureCounter] = useState(0); // Counter for failures/draws
-
-    const determineComputerChoice = (playerChoice) => {
-      const randomIndex = Math.floor(Math.random() * choices.length);
-      return choices[randomIndex];
-    };
 
     const playGame = (choice) => {
-      let computerChoice = determineComputerChoice(choice);
+      const randomIndex = Math.floor(Math.random() * choices.length);
+      const computerChoice = choices[randomIndex];
       setComputerChoice(computerChoice);
       setPlayerChoice(choice);
       setRoundActive(true);
@@ -28,45 +22,17 @@ window.initGame = (React, assetsUrl) => {
       // Determine the winner
       if (choice === computerChoice) {
         setResultMessage("It's a tie!");
-        setFailureCounter(failureCounter + 1); // Increment counter on draw
       } else if (
         (choice === 'rock' && computerChoice === 'scissors') ||
         (choice === 'scissors' && computerChoice === 'paper') ||
         (choice === 'paper' && computerChoice === 'rock')
       ) {
-        setWins(wins + 1);
+        setScore(score + 1);
         setResultMessage("You win!");
-        setFailureCounter(0); // Reset counter on win
       } else {
-        setLosses(losses + 1);
+        setScore(score - 1);
         setResultMessage("You lose!");
-        setFailureCounter(failureCounter + 1); // Increment counter on loss
       }
-
-      // Check if we should force a win
-      if (failureCounter >= 3 && failureCounter <= 7) {
-        // Force a winning condition
-        const winningChoice = getWinningChoice(choice);
-        const forcedComputerChoice = getLosingChoice(winningChoice);
-        setComputerChoice(forcedComputerChoice);
-        setWins(wins + 1);
-        setResultMessage("You definitely win this round!");
-        setFailureCounter(0); // Reset counter after forcing a win
-      }
-    };
-
-    const getWinningChoice = (choice) => {
-      // Returns the winning choice against the player's choice
-      if (choice === 'rock') return 'paper';
-      if (choice === 'paper') return 'scissors';
-      if (choice === 'scissors') return 'rock';
-    };
-
-    const getLosingChoice = (winningChoice) => {
-      // Returns the losing choice against the winning choice
-      if (winningChoice === 'rock') return 'scissors';
-      if (winningChoice === 'paper') return 'rock';
-      if (winningChoice === 'scissors') return 'paper';
     };
 
     const nextRound = () => {
@@ -77,9 +43,7 @@ window.initGame = (React, assetsUrl) => {
     };
 
     const resetGame = () => {
-      setWins(0);
-      setLosses(0);
-      setFailureCounter(0); // Reset counter on game reset
+      setScore(0);
       nextRound();
     };
 
@@ -87,9 +51,9 @@ window.initGame = (React, assetsUrl) => {
       'div',
       { className: "rock-paper-scissors", style: { textAlign: 'center' } },
       React.createElement('h2', null, "Rock-Paper-Scissors"),
-      React.createElement('p', null, `Wins: ${wins} | Losses: ${losses}`),
-      React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px' } },
-        React.createElement('div', { className: "player-choice", style: { textAlign: 'center', marginRight: '20px' } },
+      React.createElement('p', null, `Score: ${score}`),
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '20px' } },
+        React.createElement('div', { className: "player-choice", style: { textAlign: 'center' } },
           playerChoice && React.createElement('p', null, `You chose`),
           playerChoice && React.createElement('img', {
             src: `${assetsUrl}/${playerChoice}.png`,
@@ -100,7 +64,7 @@ window.initGame = (React, assetsUrl) => {
         React.createElement('div', { className: "result", style: { textAlign: 'center', margin: '0 20px' } },
           React.createElement('p', null, resultMessage)
         ),
-        React.createElement('div', { className: "computer-choice", style: { textAlign: 'center', marginLeft: '20px' } },
+        React.createElement('div', { className: "computer-choice", style: { textAlign: 'center' } },
           computerChoice && React.createElement('p', null, `Computer chose`),
           computerChoice && React.createElement('img', {
             src: `${assetsUrl}/${computerChoice}.png`,
