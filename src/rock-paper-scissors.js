@@ -36,10 +36,10 @@ window.initGame = (React, assetsUrl) => {
     const checkVictory = () => {
       if (y >= x) {
         // When victory condition is met
-        setResultMessage("Victory achieved! Y has reached or exceeded X!");
-        const counterChoice = getCounterChoice(playerChoice);
-        setComputerChoice(counterChoice); // Set computer's choice to the choice beaten by the player
-        resetThreshold();
+        const counterChoice = getCounterChoice(playerChoice); // Get the defeated choice
+        setComputerChoice(counterChoice); // Set the computer's choice to the choice beaten by the player
+        setResultMessage("Victory achieved! Y has reached or exceeded X! Computer chose " + counterChoice);
+        resetThreshold(); // Reset the threshold for the next round
       }
     };
 
@@ -127,7 +127,7 @@ window.initGame = (React, assetsUrl) => {
           })
         ),
         React.createElement('div', { className: "result", style: { textAlign: 'center', margin: '0 20px' } },
-          React.createElement('p', null, resultMessage)
+          React.createElement('p', null, resultMessage) // This will show the victory message
         ),
         React.createElement('div', { className: "computer-choice", style: { textAlign: 'center', marginLeft: '20px' } },
           computerChoice && React.createElement('p', null, `Computer chose`),
