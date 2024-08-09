@@ -20,25 +20,9 @@ window.initGame = (React, assetsUrl) => {
       setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15);
     }, []);
 
-    const getCounterChoice = (choice) => {
-      switch (choice) {
-        case 'rock':
-          return 'scissors';
-        case 'paper':
-          return 'rock';
-        case 'scissors':
-          return 'paper';
-        default:
-          return null;
-      }
-    };
-
     const checkVictory = () => {
-      console.log("Checking for victory: Y =", y, "X =", x); // Debug log
       if (y >= x) {
-        const counterChoice = getCounterChoice(playerChoice);
-        setComputerChoice(counterChoice);
-        setResultMessage("Victory achieved! Y has reached or exceeded X! Computer chose " + counterChoice);
+        setResultMessage("Victory achieved! Y has reached or exceeded X!");
         resetThreshold();
       }
     };
@@ -52,6 +36,7 @@ window.initGame = (React, assetsUrl) => {
 
       // Determine the winner
       if (choice === computerChoice) {
+        // Tie situation
         const tieIncrement = Math.floor(Math.random() * (8 - 3 + 1)) + 3;
         setY(y + tieIncrement);
         setResultMessage(`It's a tie! Y is now ${y + tieIncrement}.`);
@@ -60,12 +45,13 @@ window.initGame = (React, assetsUrl) => {
         (choice === 'scissors' && computerChoice === 'paper') ||
         (choice === 'paper' && computerChoice === 'rock')
       ) {
+        // Player wins
         setWins(wins + 1);
         setY(0); // Reset Y
         setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
         setResultMessage("You win! Victory Threshold achieved!");
-        setComputerChoice(getCounterChoice(choice));
       } else {
+        // Player loses
         const increment = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
         setY(y + increment);
         setLosses(losses + 1);
@@ -73,6 +59,18 @@ window.initGame = (React, assetsUrl) => {
       }
 
       // Check for victory condition
+      checkVictory();
+    };
+
+    const triggerFailure = () => {
+      const increment = Math.floor(Math.random() * (10 - 5 + 1)) + 5; // Random increment between 5 and 10
+      setY(y + increment);
+      setLosses(losses + 1);
+      setPlayerChoice('rock'); // Set player's choice to rock
+      setComputerChoice('paper'); // Set computer's choice to paper
+      setResultMessage(`Failure triggered! You chose Rock and the Computer chose Paper. Y is now ${y + increment}.`);
+
+      // Check for victory condition after failure
       checkVictory();
     };
 
@@ -136,6 +134,11 @@ window.initGame = (React, assetsUrl) => {
               onClick: () => playGame(choice),
             }
           )
+        ),
+        React.createElement(
+          'button',
+          { onClick: triggerFailure, style: { marginTop: '20px' } },
+          'Trigger Failure'
         )
       ),
       React.createElement(
