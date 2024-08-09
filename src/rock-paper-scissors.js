@@ -20,7 +20,8 @@ window.initGame = (React, assetsUrl) => {
       setComputerChoice(computerChoice);
       setPlayerChoice(choice);
       setRoundActive(true);
-      setRoundsPlayed(roundsPlayed + 1);
+      const newRoundsPlayed = roundsPlayed + 1;
+      setRoundsPlayed(newRoundsPlayed);
 
       // Determine the winner
       if (choice === computerChoice) {
@@ -36,8 +37,8 @@ window.initGame = (React, assetsUrl) => {
         setResultMessage("You lose!");
       }
 
-      // Check if the player has won 2 out of 3 rounds
-      if (currentRoundWins + 1 === 2 || roundsPlayed === 3) {
+      // Check if the player has won 2 out of 3 rounds or if 3 rounds have been played
+      if (currentRoundWins + 1 === 2 || newRoundsPlayed === 3) {
         if (currentRoundWins + 1 === 2) {
           setScore(score + 1);
         }
