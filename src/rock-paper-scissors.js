@@ -8,6 +8,7 @@ window.initGame = (React, assetsUrl) => {
     const choices = ['rock', 'paper', 'scissors'];
     const [wins, setWins] = useState(0);
     const [losses, setLosses] = useState(0);
+    const [ties, setTies] = useState(0); // New state for ties
     const [computerChoice, setComputerChoice] = useState(null);
     const [playerChoice, setPlayerChoice] = useState(null);
     const [resultMessage, setResultMessage] = useState('');
@@ -22,6 +23,7 @@ window.initGame = (React, assetsUrl) => {
 
       // Determine the winner
       if (choice === computerChoice) {
+        setTies(ties + 1); // Increment ties
         setResultMessage("It's a tie!");
       } else if (
         (choice === 'rock' && computerChoice === 'scissors') ||
@@ -46,18 +48,19 @@ window.initGame = (React, assetsUrl) => {
     const resetGame = () => {
       setWins(0);
       setLosses(0);
+      setTies(0); // Reset ties
       nextRound();
     };
 
-    // Calculate win rate
-    const totalGames = wins + losses;
+    // Calculate total games
+    const totalGames = wins + losses + ties;
     const winRate = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(2) : 0;
 
     return React.createElement(
       'div',
       { className: "rock-paper-scissors", style: { textAlign: 'center' } },
       React.createElement('h2', null, "Rock-Paper-Scissors"),
-      React.createElement('p', null, `Wins: ${wins} | Losses: ${losses}`),
+      React.createElement('p', null, `Wins: ${wins} | Losses: ${losses} | Ties: ${ties}`), // Display ties
       React.createElement('p', null, `Win Rate: ${winRate}%`), // Display win rate
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px' } },
         React.createElement('div', { className: "player-choice", style: { textAlign: 'center', marginRight: '20px' } },
