@@ -11,8 +11,6 @@ window.initGame = (React, assetsUrl) => {
     const [playerChoice, setPlayerChoice] = useState(null);
     const [resultMessage, setResultMessage] = useState('');
     const [roundActive, setRoundActive] = useState(false);
-    const [currentRoundWins, setCurrentRoundWins] = useState(0);
-    const [roundsPlayed, setRoundsPlayed] = useState(0);
 
     const playGame = (choice) => {
       const randomIndex = Math.floor(Math.random() * choices.length);
@@ -20,8 +18,6 @@ window.initGame = (React, assetsUrl) => {
       setComputerChoice(computerChoice);
       setPlayerChoice(choice);
       setRoundActive(true);
-      const newRoundsPlayed = roundsPlayed + 1;
-      setRoundsPlayed(newRoundsPlayed);
 
       // Determine the winner
       if (choice === computerChoice) {
@@ -31,23 +27,11 @@ window.initGame = (React, assetsUrl) => {
         (choice === 'scissors' && computerChoice === 'paper') ||
         (choice === 'paper' && computerChoice === 'rock')
       ) {
-        setCurrentRoundWins(currentRoundWins + 1);
+        setScore(score + 1);
         setResultMessage("You win!");
       } else {
+        setScore(score - 1);
         setResultMessage("You lose!");
-      }
-
-      // Check if the player has won 2 out of 3 rounds or if 3 rounds have been played
-      if (currentRoundWins + 1 === 2 || newRoundsPlayed === 3) {
-        if (currentRoundWins + 1 === 2) {
-          setScore(score + 1);
-        }
-        // Reset for the next set
-        setCurrentRoundWins(0);
-        setRoundsPlayed(0);
-        setTimeout(() => {
-          nextRound();
-        }, 2000); // Automatically proceed to next round after 2 seconds
       }
     };
 
@@ -60,8 +44,6 @@ window.initGame = (React, assetsUrl) => {
 
     const resetGame = () => {
       setScore(0);
-      setCurrentRoundWins(0);
-      setRoundsPlayed(0);
       nextRound();
     };
 
@@ -70,8 +52,6 @@ window.initGame = (React, assetsUrl) => {
       { className: "rock-paper-scissors", style: { textAlign: 'center' } },
       React.createElement('h2', null, "Rock-Paper-Scissors"),
       React.createElement('p', null, `Score: ${score}`),
-      React.createElement('div', null, `Current Round: ${Math.floor(roundsPlayed / 3) + 1}`),
-      React.createElement('div', null, `Rounds Won in Current Set: ${currentRoundWins}`),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '20px' } },
         React.createElement('div', { className: "player-choice", style: { textAlign: 'center' } },
           playerChoice && React.createElement('p', null, `You chose`),
