@@ -49,11 +49,16 @@ window.initGame = (React, assetsUrl) => {
       nextRound();
     };
 
+    // Calculate win rate
+    const totalGames = wins + losses;
+    const winRate = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(2) : 0;
+
     return React.createElement(
       'div',
       { className: "rock-paper-scissors", style: { textAlign: 'center' } },
       React.createElement('h2', null, "Rock-Paper-Scissors"),
       React.createElement('p', null, `Wins: ${wins} | Losses: ${losses}`),
+      React.createElement('p', null, `Win Rate: ${winRate}%`), // Display win rate
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px' } },
         React.createElement('div', { className: "player-choice", style: { textAlign: 'center', marginRight: '20px' } },
           playerChoice && React.createElement('p', null, `You chose`),
