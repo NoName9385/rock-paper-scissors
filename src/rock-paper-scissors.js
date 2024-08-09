@@ -29,7 +29,10 @@ window.initGame = (React, assetsUrl) => {
 
       // Determine the winner
       if (choice === computerChoice) {
-        setResultMessage("It's a tie!");
+        // Tie situation
+        const tieIncrement = Math.floor(Math.random() * (8 - 3 + 1)) + 3;
+        setY(y + tieIncrement);
+        setResultMessage(`It's a tie! Y is now ${y + tieIncrement}.`);
       } else if (
         (choice === 'rock' && computerChoice === 'scissors') ||
         (choice === 'scissors' && computerChoice === 'paper') ||
@@ -37,26 +40,16 @@ window.initGame = (React, assetsUrl) => {
       ) {
         // Player wins
         setWins(wins + 1);
-        if (y === x) {
-          // Player must win if y equals x
-          setResultMessage("You win! Victory Threshold achieved!");
-          resetThreshold();
-        } else {
-          setResultMessage("You win!");
-        }
+        setY(0); // Reset Y
+        setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
+        setResultMessage("You win! Victory Threshold achieved!");
       } else {
         // Player loses
         const increment = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
         setY(y + increment);
         setLosses(losses + 1);
-        setResultMessage(`You lose! Y is now ${y}. Try again!`);
+        setResultMessage(`You lose! Y is now ${y + increment}. Try again!`);
       }
-    };
-
-    const resetThreshold = () => {
-      setY(0);
-      setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15);
-      // Optionally reset losses here if you want to reset y on win
     };
 
     const nextRound = () => {
@@ -69,7 +62,8 @@ window.initGame = (React, assetsUrl) => {
     const resetGame = () => {
       setWins(0);
       setLosses(0);
-      resetThreshold();
+      setY(0);
+      setX(Math.floor(Math.random() * (30 - 15 + 1)) + 15); // Reset X
       nextRound();
     };
 
