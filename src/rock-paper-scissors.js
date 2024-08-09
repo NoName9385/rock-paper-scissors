@@ -55,7 +55,7 @@ window.initGame = (React, assetsUrl) => {
       React.createElement('h2', null, "Rock-Paper-Scissors"),
       React.createElement('p', null, `Wins: ${wins} | Losses: ${losses}`),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '20px' } },
-        React.createElement('div', { className: "player-choice", style: { textAlign: 'center', marginRight: '80px' } },
+        React.createElement('div', { className: "player-choice", style: { textAlign: 'center', marginRight: '40px' } },
           playerChoice && React.createElement('p', null, `You chose`),
           playerChoice && React.createElement('img', {
             src: `${assetsUrl}/${playerChoice}.png`,
@@ -66,7 +66,7 @@ window.initGame = (React, assetsUrl) => {
         React.createElement('div', { className: "result", style: { textAlign: 'center', margin: '0 20px' } },
           React.createElement('p', null, resultMessage)
         ),
-        React.createElement('div', { className: "computer-choice", style: { textAlign: 'center', marginLeft: '80px' } },
+        React.createElement('div', { className: "computer-choice", style: { textAlign: 'center', marginLeft: '40px' } },
           computerChoice && React.createElement('p', null, `Computer chose`),
           computerChoice && React.createElement('img', {
             src: `${assetsUrl}/${computerChoice}.png`,
