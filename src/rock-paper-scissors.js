@@ -12,9 +12,7 @@ window.initGame = (React, assetsUrl) => {
     const [playerChoice, setPlayerChoice] = useState(null);
     const [resultMessage, setResultMessage] = useState('');
     const [roundActive, setRoundActive] = useState(false);
-    const [maxFailures, setMaxFailures] = useState(null); // Random draw threshold
     const [failureCounter, setFailureCounter] = useState(0); // Counter for failures/draws
-    const [victoryTriggered, setVictoryTriggered] = useState(false); // Flag to prevent multiple triggers
 
     const determineComputerChoice = (playerChoice) => {
       const randomIndex = Math.floor(Math.random() * choices.length);
@@ -30,7 +28,7 @@ window.initGame = (React, assetsUrl) => {
       // Determine the winner
       if (choice === computerChoice) {
         setResultMessage("It's a tie!");
-        return; // Do not handle failure or victory on tie
+        setFailureCounter(failureCounter + 1); // Increment counter on draw
       } else if (
         (choice === 'rock' && computerChoice === 'scissors') ||
         (choice === 'scissors' && computerChoice === 'paper') ||
@@ -38,44 +36,30 @@ window.initGame = (React, assetsUrl) => {
       ) {
         setWins(wins + 1);
         setResultMessage("You win!");
-        resetFailureCounter(); // Reset counter on win
+        setFailureCounter(0); // Reset counter on win
       } else {
         setLosses(losses + 1);
         setResultMessage("You lose!");
-        handleFailure(); // Handle failure only on loss
+        setFailureCounter(failureCounter + 1); // Increment counter on loss
       }
-    };
-
-    const handleFailure = () => {
-      // Initialize maxFailures randomly between 3 and 7 on first failure
-      if (maxFailures === null) {
-        const randomFailures = Math.floor(Math.random() * 5) + 3; // Random number between 3 and 7
-        setMaxFailures(randomFailures);
-      }
-
-      // Increment the failure counter
-      setFailureCounter(failureCounter + 1); 
 
       // Check if we should force a win
-      if (failureCounter + 1 >= maxFailures && !victoryTriggered) {
-        forceWin();
+      if (failureCounter >= 3 && failureCounter <= 7) {
+        // Force a winning condition
+        const winningChoice = getWinningChoice(choice);
+        const forcedComputerChoice = getLosingChoice(winningChoice);
+        setComputerChoice(forcedComputerChoice);
+        setWins(wins + 1);
+        setResultMessage("You definitely win this round!");
+        setFailureCounter(0); // Reset counter after forcing a win
       }
     };
 
-    const forceWin = () => {
-      const winningChoice = playerChoice;
-      const forcedComputerChoice = getLosingChoice(winningChoice);
-      setComputerChoice(forcedComputerChoice);
-      setWins(wins + 1);
-      setResultMessage("You definitely win this round!");
-      setVictoryTriggered(true); // Set flag to prevent further triggers
-      // Do NOT increment failureCounter here
-    };
-
-    const resetFailureCounter = () => {
-      setFailureCounter(0);
-      setMaxFailures(null); // Reset the maxFailures to allow for a new random value
-      setVictoryTriggered(false); // Reset the victory trigger flag
+    const getWinningChoice = (choice) => {
+      // Returns the winning choice against the player's choice
+      if (choice === 'rock') return 'paper';
+      if (choice === 'paper') return 'scissors';
+      if (choice === 'scissors') return 'rock';
     };
 
     const getLosingChoice = (winningChoice) => {
@@ -90,13 +74,12 @@ window.initGame = (React, assetsUrl) => {
       setPlayerChoice(null);
       setResultMessage('');
       setRoundActive(false);
-      resetFailureCounter(); // Reset on next round
     };
 
     const resetGame = () => {
       setWins(0);
       setLosses(0);
-      resetFailureCounter(); // Reset counter on game reset
+      setFailureCounter(0); // Reset counter on game reset
       nextRound();
     };
 
